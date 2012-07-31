@@ -1,5 +1,5 @@
 body {
-    background-color: #fff;;
+    background-color: #fff;
     background-image: none;
     color: #000;
 }
@@ -8,19 +8,17 @@ h1,h2,h3,h4,h5,h6 {
     color: #000;
 }
 
-#header-wrapper {
-    display: none;
-}
-
-#header {
-    display: none;
-}
-
-#main-menu {
-    display: none;
-}
-
-.spacer {
+#header-wrapper,
+#header,
+#main-menu,
+.spacer,
+a.button,
+input[type="button"],
+input[type="submit"],
+.drop-shadow:before,
+.drop-shadow:after,
+#footer-wrapper,
+#expand {
     display: none;
 }
 
@@ -31,31 +29,7 @@ h1,h2,h3,h4,h5,h6 {
     width: 100%;
 }
 
-a.button,
-input[type="button"],
-input[type="submit"]{
-    display: none;
-}
-
-
 .drop-shadow {
    position:relative;
    width:90%;
 }
-
-.drop-shadow:before,
-.drop-shadow:after {
-    display: none;
-}
-
-.drop-shadow:after{
-    display: none;
- }
- 
- #footer-wrapper {
-    display: none;
- }
- 
-/* #footer {
-     color: #000;
- }*/
