@@ -32,7 +32,45 @@ class User extends Model {
      * @return void 
      */
     public function validate_login(){
-        if ($_SESSION[APP_SES.'id'] == 0) { 
+         //Check to see if they have a cookie for access
+        if (isset($_COOKIE[APP_SES.'id'])) {
+            $c_ary = array();
+            $c_ary = unserialize(base64_decode($_COOKIE[APP_SES.'id']));
+            $c_aid = $c_ary['id'];
+            $c_apwd = $c_ary['password'];
+            $c_ausr = $c_ary['user'];
+            //echo "$c_aid : $c_apwd : $c_ausr";
+            if ($c_aid > 0) {
+                $sql = "SELECT {$this->primaryKey},email, fname, lname, password, temp_pwd, user_type FROM 
+                    {$this->table} WHERE `{$this->primaryKey}` = ? LIMIT 1";
+                $query = $this->db->prepare($sql);
+                $query->execute(array($c_aid));
+                $result = $query->fetch();
+                
+                if ($result['password'] == $c_apwd && md5(COOKIE_SALT.$result['email']) == $c_ausr) {
+                    
+                    $_SESSION[APP_SES.'id'] = $c_aid;    
+                    $_SESSION[APP_SES.'email'] = $result['email'];
+                    $_SESSION[APP_SES.'fname'] = $result['fname'];
+                    $_SESSION[APP_SES.'lname'] = $result['lname'];
+                    $_SESSION[APP_SES.'user_type'] = $result['user_type'];
+                    if ($result['user_type']=='0') {
+                        return LOGIN_DISABLED;
+                    }
+                    if ($result['temp_pwd']=='1') {
+                        return LOGIN_RESET;
+                    }   
+                    return LOGIN_SUCCESS;
+                } else {
+                    return LOGIN_INVALID;
+                }
+            } else {
+                return LOGIN_SUCCESS;
+            }   
+        }
+        
+        //They did not have a cookie, so lets see if they are a valid user
+        if (!isset($_SESSION[APP_SES.'id']) || $_SESSION[APP_SES.'id'] == 0) { 
             $username = $_REQUEST['email'];
             $password = md5(SALT.$_REQUEST['password']);
 
@@ -42,6 +80,16 @@ class User extends Model {
             $result = $query->fetch();
             $compair_pwd = $result['password'];
 
+            //Save cookie if remember me is checked
+            if (isset($_REQUEST['rememberme']) && $_REQUEST['rememberme']=='1') {
+                $expire=time()+60*60*24*30; //Expires on:
+                $c_id = $result[$this->primaryKey];
+                $c_pwd = $compair_pwd;
+                $c_usr = md5(COOKIE_SALT.$result['email']);
+                $c_a = array('id'=>$c_id, 'password'=>$c_pwd, 'user'=>$c_usr);
+                setcookie(APP_SES.'id', base64_encode(serialize($c_a)), $expire);
+            }
+            
             if ($password == $compair_pwd) {
                 $_SESSION[APP_SES.'id'] = $result[$this->primaryKey];
                 $_SESSION[APP_SES.'email'] = $result['email'];

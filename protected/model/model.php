@@ -109,13 +109,16 @@ class Model extends Application {
      *
      * @return void
      */
-    public function setMember($name, $value) {
-        if (!array_key_exists($name, $this -> members) && $name <> $this -> primaryKey) {
+    public function set_member($name, $value) { 
+        if (is_array($this->members) && !array_key_exists($name, $this->members) && $name <> $this->primaryKey) {
             return;
         }
-        $this -> members[$name] = $value;
+        if (is_array($value)) {
+            $this->members[$name] = serialize($value);
+        } else {
+            $this->members[$name] = $value;    
+        }
     }
-
     /**
      * Array Setter for class members
      *
@@ -229,7 +232,7 @@ class Model extends Application {
                 VALUES ({$placeholders})
             ";
             $query = $this -> db -> prepare($sql);
-            $query -> execute($values);
+            $success = $query -> execute($values);
             $this -> members[$this -> primaryKey] = $this -> db -> lastInsertId();
 
         } else {
@@ -247,12 +250,13 @@ class Model extends Application {
                 WHERE {$this->primaryKey}={$this->members[$this->primaryKey]}
             ";
             $query = $this -> db -> prepare($sql);
-            $query -> execute($values);
+            $success = $query -> execute($values);
         }
 
         if (method_exists($this, 'postSave')) {
             $this -> postSave();
         }
+        return $success;
 
     }
 
