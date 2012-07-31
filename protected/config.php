@@ -39,6 +39,7 @@ ini_set("display_errors", 0);                       // PHP Debug Mode
  
 //App vars
 define('SALT','QuC6d0XJLiqiXiLh');                  // Salt the user passwords to make them harder to reverse the stored hash
+define('COOKIE_SALT', 'HJGHGFDSGIU3273247abju@@#'); // Salt for cookie logins
 define('APP_SES','schnippets');                     // Give the session variables a name
 define('DEBUG_MAIL',true);                          // If Debug is true will just echo out, If False it will Send out real emails
 define('FROM_EMAIL_ADDRESS','Changeme@ISP.com');    // System FROM email address
