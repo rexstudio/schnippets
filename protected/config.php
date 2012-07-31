@@ -45,7 +45,7 @@ define('DEBUG_MAIL',true);                          // If Debug is true will jus
 define('FROM_EMAIL_ADDRESS','Changeme@ISP.com');    // System FROM email address
 
 // Database Connection Information
-define('DB_TYPE', 'mysql');			    // Database Type
+define('DB_TYPE', 'mysql');			                // Database Type
 define('DB_USER', 'schnippets');                    // Database Username
 define('DB_PASS', 'your_database_password');        // Database Password
 define('DB_HOST', 'localhost');                     // Database Hostname 

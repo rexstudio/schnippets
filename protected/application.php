@@ -95,6 +95,12 @@ class Application {
             $this -> method = "";
         if (isset($_GET['v']))
             $this -> var = $_GET['v'];
+        
+        if (isset($_COOKIE[APP_SES.'id'])) {
+            $this->loadModel('/users/user');
+            $user = new User;
+            $user->validate_login();
+        }
     }
 
     /**

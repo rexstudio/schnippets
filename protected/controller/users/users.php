@@ -92,6 +92,7 @@ class usersusers extends Application {
         unset($_SESSION[APP_SES . 'fname']);
         unset($_SESSION[APP_SES . 'lname']);
         $message = $_SESSION['message'];
+        setcookie(APP_SES.'id',"",time()-3600); 
         session_destroy();
         session_start();
         $_SESSION['message'] = $message;

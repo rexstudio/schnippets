@@ -25,7 +25,7 @@ FIRST LOGIN
 - Open your browser and navigate to the root of your webserver
 - Click the login link
 - Default authentication information:
-  - username: admin
+  - username: admin@example.com
   - password: password
 
 ** Please update the username and password once you have logged in 
