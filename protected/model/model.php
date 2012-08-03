@@ -109,7 +109,7 @@ class Model extends Application {
      *
      * @return void
      */
-    public function set_member($name, $value) { 
+    public function setMember($name, $value) { 
         if (is_array($this->members) && !array_key_exists($name, $this->members) && $name <> $this->primaryKey) {
             return;
         }
